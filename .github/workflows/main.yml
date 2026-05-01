@@ -16,16 +16,13 @@ jobs:
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # 强制在当前目录找图纸，找不到就报错
-          if [ ! -f "buildozer.spec" ]; then
-            echo "错误：根目录下没找到 buildozer.spec！请确保文件就在 main.py 旁边。"
-            ls -R
-            exit 1
-          fi
+          # 检查文件是否存在并打印出来，防止重名或隐藏字符
+          ls -a
+          # 运行打包
           yes | buildozer android debug
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: my-package
           path: bin/*.apk
