@@ -2,13 +2,16 @@
         run: |
           sudo apt update
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
-          # 强制安装到全局系统路径
-          sudo pip3 install buildozer cython==0.29.33 virtualenv
+          # 使用 sudo 强制安装到全局，确保机器人一定能找到
+          sudo pip3 install --upgrade pip
+          sudo pip3 install cython==0.29.33 buildozer virtualenv
 
       - name: Build with Buildozer
         run: |
-          # 这一行确保系统能找到刚才装的工具
-          export PATH=$PATH:$HOME/.local/bin
-          # 强制检查一次，日志里如果出了版本号，就绝对没问题
+          # 这一行最关键：手动把所有可能的路径都加上
+          export PATH=$PATH:/usr/local/bin:$HOME/.local/bin
+          # 验证 Cython 是不是真的在那
+          which cython
           cython --version
+          # 开始打包
           yes | buildozer android debug
