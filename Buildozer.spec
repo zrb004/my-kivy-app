@@ -1,5 +1,5 @@
 [app]
-title = MyKivyApp
+title = My Kivy App
 package.name = myapp
 package.domain = org.test
 source.dir = .
@@ -10,4 +10,7 @@ orientation = portrait
 android.archs = arm64-v8a, armeabi-v7a
 android.allow_backup = True
 android.accept_sdk_license = True
-
+android.api = 33
+android.minapi = 21
+android.sdk = 33
+android.ndk = 25b
