@@ -3,19 +3,20 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # 指定稳定的系统版本
     steps:
       - uses: actions/checkout@v4
 
       - name: Buildozer Action
-        uses: ArtemSerebrennikov/buildozer-action@v1
+        # 换用这个更稳的脚本
+        uses: Enenkel/buildozer-action@v0.0.1
         with:
-          buildozer_version: master
           command: buildozer android debug
-          repository_read_token: ${{ secrets.GITHUB_TOKEN }}
+          buildozer_version: stable
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: package
           path: bin/*.apk
+
