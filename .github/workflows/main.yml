@@ -3,20 +3,24 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # 指定稳定的系统版本
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
-      - name: Buildozer Action
-        # 换用这个更稳的脚本
-        uses: Enenkel/buildozer-action@v0.0.1
-        with:
-          command: buildozer android debug
-          buildozer_version: stable
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          pip3 install --user --upgrade buildozer
+
+      - name: Build with Buildozer
+        run: |
+          export PATH=$PATH:$HOME/.local/bin
+          # 自动接受 Android SDK 协议并开始打包
+          yes | buildozer android debug
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: my-app-apk
           path: bin/*.apk
-
