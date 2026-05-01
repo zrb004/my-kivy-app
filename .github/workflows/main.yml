@@ -11,18 +11,17 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
-          pip3 install --user --upgrade buildozer
+          # 关键点：这里增加了 cython 的安装
+          pip3 install --user --upgrade buildozer cython==0.29.33
 
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # 检查文件是否存在并打印出来，防止重名或隐藏字符
-          ls -a
-          # 运行打包
+          # 自动接受协议并开始打包
           yes | buildozer android debug
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-package
+          name: my-app-apk
           path: bin/*.apk
